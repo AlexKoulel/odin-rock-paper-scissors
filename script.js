@@ -1,100 +1,120 @@
-const rockbtn = document.getElementById('RockButton');
-const paperbtn = document.getElementById('PaperButton');
-const scissorsbtn = document.getElementById('ScissorsButton');
+const rockButton = document.getElementById('RockButton');
+const paperButton = document.getElementById('PaperButton');
+const scissorsButton = document.getElementById('ScissorsButton');
+const roundText = document.getElementById('Round');
+const computerResultImage = document.getElementById('ComputerAnswer');
+const playerScoreText = document.getElementById('PlayerScore');
+const computerScoreText = document.getElementById('ComputerScore');
 var playerSelection;
-var computerResult = document.getElementById("Computer Result");
 var computerSelection = getComputerChoice();
 var roundResult = document.getElementById("GameResult");
 var round = 1;
 var playerScore = 0;
 var computerScore = 0;
+let gameIsOver = false;
 
-rockbtn.addEventListener('click',function handleClick()
-{
-    playerSelection = "rock";
-    playRound(playerSelection);
+setInterval(function(){
+    if(round>1)
+    {
+        playerScoreText.innerHTML = "Your score : " + playerScore;
+        computerScoreText.innerHTML = "Computer's score: " + computerScore;    
+        if(playerScore == 5 || computerScore == 5)
+        {
+            gameIsOver = true;
+            if(playerScore > computerScore)
+            {
+                roundResult.innerHTML = "GAME OVER YOU WIN!";
+            }
+            else  if(computerScore > playerScore)
+            {
+                roundResult.innerHTML = "GAME OVER YOU LOSE!";
+            }
+        }
+    }
 })
+        rockButton.addEventListener('click',function handleClick()
+        {
+            if(!gameIsOver)
+            {
+                playerSelection = "rock";
+                playRound(playerSelection);
+            }
+        })
+        
+        paperButton.addEventListener('click',function handleClick()
+        {
+            if(!gameIsOver)
+            {
+                playerSelection = "paper";
+                playRound(playerSelection);           
+            }
+        })
+        
+        scissorsButton.addEventListener('click',function handleClick()
+        {
+            if(!gameIsOver)
+            {
+                playerSelection = "scissors";
+                playRound(playerSelection);
+            }
+        })
+        
+    
 
-paperbtn.addEventListener('click',function handleClick()
-{
-    playerSelection = "paper";
-    playRound(playerSelection);
-})
-
-scissorsbtn.addEventListener('click',function handleClick()
-{
-    playerSelection = "scissors";
-    playRound(playerSelection);
-})
 
 function playRound(playerSelection)
 {
     computerSelection = getComputerChoice();
-    computerResult.innerHTML = computerSelection;
-
-    if (playerSelection == computerSelection)
-    {
-        roundResult.innerHTML = "It's a tie!"
-    }
-    
-    if(playerSelection == "rock")
-    {
-        if(computerSelection =="paper")
+        if (playerSelection == computerSelection)
         {
-            roundResult.innerHTML = "Computer Wins.";
-            computerScore++;
+            roundResult.innerHTML = "It's a tie!"
         }
-        else if(computerSelection == "scissors")
-        {
-            roundResult.innerHTML = "You win!";
-            playerScore++;
-        }
-    }
-    else if(playerSelection == "paper")
-    {
-        if(computerSelection == "scissors")
-        {
-            roundResult.innerHTML = "Computer Wins.";
-            computerScore++;
-        }
-        else if(computerSelection == "rock")
-        {
-            roundResult.innerHTML = "You win!";
-            playerScore++;
-        }
-    }
-    else if(playerSelection == "scissors")
-    {
+        
         if(computerSelection == "rock")
         {
-            roundResult.innerHTML = "Computer Wins.";
-            computerScore++;
+            computerResultImage.src = "Images/rock-computer.png";
+            if(playerSelection =="scissors")
+            {
+                roundResult.innerHTML = "Rock beats scissors. Computer Wins.";
+                computerScore++;
+            }
+            else if(playerSelection == "paper")
+            {
+                roundResult.innerHTML = "Paper beats rock. You win!";
+                playerScore++;
+            }
         }
         else if(computerSelection == "paper")
         {
-            roundResult.innerHTML = "You win!";
-            playerScore++;
+            computerResultImage.src = "Images/paper-computer.png";
+    
+            if(playerSelection == "rock")
+            {
+                roundResult.innerHTML = "Paper beats rock. Computer Wins.";
+                computerScore++;
+            }
+            else if(playerSelection == "scissors")
+            {
+                roundResult.innerHTML = "Scissors beat paper. You win!";
+                playerScore++;
+            }
         }
-    }
-    round++;
-    if(round>=6)
-    {
-        var gameResult = "null";
-        if(playerScore>computerScore)
+        else if(computerSelection == "scissors")
         {
-            gameResult = "You win!";
+            computerResultImage.src = "Images/scissors-computer.png";
+    
+            if(playerSelection == "paper")
+            {
+                roundResult.innerHTML = "Scissors beat paper. Computer Wins.";
+                computerScore++;
+            }
+            else if(playerSelection == "rock")
+            {
+                roundResult.innerHTML = "Rock beats scissors. You win!";
+                playerScore++;
+            }
         }
-        else if(computerScore>playerScore)
-        {
-            gameResult = "Computer wins."
-        }
-        else if(computerScore == playerScore)
-        {
-            gameResult = "Tie.";
-        }
-        alert(gameResult);
-        round = 1;
-    }
+        round++;
 }
 
 
